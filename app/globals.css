@@ -1,0 +1,114 @@
+/* Little Tails — illustrated library homepage */
+*,*::before,*::after{box-sizing:border-box}
+html{color-scheme:light}
+html.modal-open{overflow:hidden}
+body{margin:0;background:#241c15;color:#2f4030;font-family:var(--font-lora),Georgia,serif;-webkit-font-smoothing:antialiased}
+button{font:inherit;cursor:pointer}
+img{max-width:100%}
+a{color:inherit}
+.visually-hidden{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+
+/* Room */
+.immersive-home{min-height:100vh;background:#241c15}
+.illustrated-library{position:relative;display:flex;flex-direction:column;align-items:center;min-height:100svh;background:#241c15;isolation:isolate}
+.library-artboard{position:relative;flex:none}
+.library-picture{display:block;width:100%}
+.library-painting{display:block;width:100%;height:auto;filter:saturate(.87) contrast(.94) brightness(1.035)}
+
+/* Gentle firelight flicker over the painted fireplace (desktop composition only) */
+.firelight{position:absolute;pointer-events:none;z-index:2;left:20.5%;top:40%;width:22%;height:29%;border-radius:50%;background:radial-gradient(ellipse at center,rgba(255,184,78,.29),rgba(246,139,48,.13) 38%,transparent 74%);mix-blend-mode:screen;filter:blur(13px);animation:fire-glimmer 2.7s ease-in-out infinite alternate}
+.firelight-secondary{left:24%;top:43%;width:16%;height:24%;animation-duration:1.6s;animation-delay:-.8s;opacity:.65}
+@keyframes fire-glimmer{0%{opacity:.32;transform:scale(.92) translateY(2%)}35%{opacity:.68;transform:scale(1.04) translateY(-1%)}70%{opacity:.45;transform:scale(.96) translateX(1%)}100%{opacity:.86;transform:scale(1.08) translateY(-3%)}}
+
+/* Fireplace sound toggle */
+.fire-sound-toggle{position:absolute;top:16px;right:16px;z-index:9;display:flex;align-items:center;gap:8px;min-height:44px;padding:9px 14px;border:1px solid rgba(237,205,150,.72);border-radius:30px;background:rgba(46,35,26,.85);color:#ffebc7;backdrop-filter:blur(7px);font:italic 14px var(--font-lora),Georgia,serif;box-shadow:0 4px 17px #1c100a70;transition:background .2s,transform .2s}
+.fire-sound-toggle:hover{background:#59402d;transform:translateY(-2px)}
+.fire-sound-toggle:focus-visible{background:#59402d;outline:3px solid #ffe3ad;outline-offset:2px}
+
+/* Parchment plaque positioned over the painted "Our Adventures" book (3:2 artwork coordinates) */
+.storybook-plaque{position:absolute;z-index:7;bottom:11.2%;height:4.8%;left:63.3%;width:17.4%;display:flex;align-items:center;justify-content:space-around;gap:3px;padding:0 6px;border:2px solid #9e713e;border-radius:45% / 32%;background:linear-gradient(125deg,#fff5df,#ecd3a5 48%,#fff1d1);box-shadow:0 3px 0 #68421e,0 6px 12px #1e110b80,inset 0 0 0 2px #fdf5e7;color:#49341e;font:clamp(11px,1.17vw,18px)/1.1 var(--font-lora),Georgia,serif;white-space:nowrap;transition:filter .25s,transform .25s,box-shadow .25s}
+.storybook-plaque span{color:#7d5d2c;font-size:1.15em}
+.storybook-plaque svg{width:1em;height:1em;flex:none}
+.storybook-plaque:hover,.storybook-plaque:focus-visible{filter:brightness(1.1);transform:translateY(-5px);box-shadow:0 3px 0 #68421e,0 10px 22px #1e110bc0,0 0 22px #f4cb82b0}
+.storybook-plaque:focus-visible{outline:3px solid #fbe5b4;outline-offset:3px}
+
+/* Footer line */
+.library-bottom-hint{display:flex;flex-wrap:wrap;gap:6px 14px;justify-content:center;align-items:center;width:100%;padding:12px 16px;color:#f6e5c6;font:italic 14px var(--font-lora),Georgia,serif;text-align:center}
+.library-bottom-hint p{margin:0}
+.library-bottom-hint button{border:0;background:none;padding:6px 4px;color:#f0d29f;text-decoration:underline;text-underline-offset:3px;font:inherit}
+.library-bottom-hint button:hover{color:#fff3dc}
+.library-bottom-hint button:focus-visible{outline:2px solid #ffe3ad;outline-offset:2px;border-radius:3px}
+
+/* Desktop: artwork fills the viewport, anchored to the top. On wide screens it shifts up only as far
+   as needed to keep the plaque beneath the painted book in view (the bottom 10% of the art). */
+@media (min-width:1025px){
+  .illustrated-library{height:100svh;min-height:600px;overflow:hidden}
+  .library-artboard{--art-w:min(max(100vw,150svh),178svh);position:absolute;left:50%;top:min(0px,calc(100svh - var(--art-w) * 2 / 3 * .9));transform:translateX(-50%);width:var(--art-w);aspect-ratio:3/2}
+  .library-picture,.library-painting{width:100%;height:100%;object-fit:cover}
+}
+
+/* Footer line overlays the bottom of the painting on every screen size */
+.library-bottom-hint{position:absolute;left:0;right:0;bottom:0;z-index:8;padding:14px 16px 10px;background:linear-gradient(transparent,#241c15d0);text-shadow:0 2px 9px #180d08}
+
+/* Tablet and mobile: the portrait painting fills the screen (no empty space below), with the
+   plaque overlaid on the painted book. Any side crop favours the right, where the book sits. */
+@media (max-width:1024px){
+  .illustrated-library{overflow:hidden}
+  .library-artboard{--art-w:max(100%,calc(100svh * 1086 / 1448));width:var(--art-w);aspect-ratio:1086/1448;align-self:flex-start;margin-left:calc((100% - var(--art-w)) * .75)}
+  .library-picture,.library-painting{width:100%;height:100%;object-fit:cover}
+  .firelight{display:none}
+  .storybook-plaque{bottom:19%;height:4.5%;left:62%;width:31%;min-height:40px;font-size:clamp(14px,2.2vw,18px)}
+}
+@media (max-width:640px){
+  .library-artboard{--art-w:max(100%,calc(100svh * 941 / 1672));aspect-ratio:941/1672}
+  .storybook-plaque{bottom:21.5%;height:5%;left:64.4%;width:29.6%;font-size:14px;justify-content:center;gap:6px;padding:0 4px}
+  .storybook-plaque>span{display:none}
+}
+@media (max-width:750px){
+  .fire-sound-toggle{top:10px;right:10px;padding:8px 13px}
+  .fire-sound-label{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+}
+
+/* Dialog */
+.library-modal{width:min(760px,calc(100% - 32px));max-width:none;max-height:92svh;padding:0;overflow:auto;border:10px solid #d7b988;outline:2px solid #f6e9c9;background:#f9f1de radial-gradient(#9c7f4a16 1px,transparent 1px) 0 0/8px 8px;color:#354a37;box-shadow:0 20px 85px #0e100b}
+.library-modal::backdrop{background:rgba(22,24,17,.75);backdrop-filter:blur(7px)}
+.library-modal-inner{position:relative;padding:48px clamp(20px,5vw,60px) 26px}
+.modal-title{font:normal clamp(34px,5vw,58px)/1.05 var(--font-lora),Georgia,serif;text-align:center;margin:15px 0}
+.modal-title-compact{font-size:clamp(20px,5.2vw,40px)}
+.modal-title:focus{outline:none}
+.library-modal-inner>p{text-align:center;font:17px/1.7 var(--font-lora),Georgia,serif;max-width:590px;margin:15px auto}
+.modal-ornament,.modal-footer{text-align:center;color:#6e5a35}
+.modal-ornament{letter-spacing:2px;font-size:11px}
+.modal-footer{margin-top:30px;font:italic 16px var(--font-lora),Georgia,serif}
+.modal-close{position:absolute;right:8px;top:8px;display:grid;place-items:center;width:44px;height:44px;padding:0;border:0;border-radius:50%;background:transparent;color:#354a37}
+.modal-close:hover{background:#ecdcb9}
+.modal-close:focus-visible{outline:3px solid #36573d;outline-offset:1px}
+.modal-books{display:grid;grid-template-columns:repeat(3,1fr);gap:17px;margin:30px 0}
+.modal-books img{display:block;width:100%;height:180px;object-fit:cover;border:7px solid #fffaf0;box-shadow:3px 5px 10px #42342338}
+.modal-books h3{font:normal 23px/1.1 var(--font-lora),Georgia,serif;margin:12px 0 5px}
+.modal-books p{font:14px/1.6 var(--font-lora),Georgia,serif;color:#4f5946;margin:0 0 8px}
+.modal-small{font-size:14px!important;color:#5f5e4c}
+.amazon-book-link{display:inline-block;padding:4px 0;color:#2f5236;font:italic 15px var(--font-lora),Georgia,serif;text-decoration:underline;text-underline-offset:4px}
+.amazon-book-link:hover{color:#1d3a24}
+.amazon-book-link:focus-visible{outline:2px solid #36573d;outline-offset:2px;border-radius:2px}
+.privacy-copy{max-width:590px;margin:auto}
+.privacy-copy h3{font:normal 23px var(--font-lora),Georgia,serif;margin:22px 0 5px}
+.privacy-copy p{font:16px/1.65 var(--font-lora),Georgia,serif;margin:0}
+.privacy-copy p+p{margin-top:10px}
+.privacy-copy .privacy-signoff{margin-top:28px;text-align:center}
+@media (max-width:750px){
+  .library-modal{border-width:7px}
+  .modal-books{grid-template-columns:1fr}
+  .modal-books article{display:grid;grid-template-columns:100px 1fr;column-gap:15px;align-content:start}
+  .modal-books img{height:115px;grid-row:span 3}
+  .modal-books h3{margin:0}
+}
+
+@media (prefers-reduced-motion:reduce){
+  .firelight{animation:none;opacity:.35}
+  .fire-sound-toggle,.storybook-plaque{transition:none}
+  .fire-sound-toggle:hover,.storybook-plaque:hover,.storybook-plaque:focus-visible{transform:none}
+}
+@media (forced-colors:active){
+  .storybook-plaque,.fire-sound-toggle{border:2px solid ButtonText}
+}
