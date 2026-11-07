@@ -2,6 +2,22 @@
 import {useCallback, useEffect, useRef, useState} from 'react';
 
 type FireSound = {sources: AudioBufferSourceNode[]; gain: GainNode};
+type AudioSessionNavigator = Navigator & {audioSession?: {type: string}};
+
+/** A tiny silent WAV. Playing it through an <audio> element during the tap moves iOS into the
+ *  "playback" audio session, so Web Audio is heard even when the ringer/silent switch is on. */
+function silentWavUrl() {
+  const sr = 8000, samples = 800; // 0.1s, 8-bit mono
+  const buf = new ArrayBuffer(44 + samples);
+  const v = new DataView(buf);
+  const str = (o: number, t: string) => { for (let i = 0; i < t.length; i++) v.setUint8(o + i, t.charCodeAt(i)); };
+  str(0, 'RIFF'); v.setUint32(4, 36 + samples, true); str(8, 'WAVE');
+  str(12, 'fmt '); v.setUint32(16, 16, true); v.setUint16(20, 1, true); v.setUint16(22, 1, true);
+  v.setUint32(24, sr, true); v.setUint32(28, sr, true); v.setUint16(32, 1, true); v.setUint16(34, 8, true);
+  str(36, 'data'); v.setUint32(40, samples, true);
+  for (let i = 0; i < samples; i++) v.setUint8(44 + i, 128);
+  return URL.createObjectURL(new Blob([buf], {type: 'audio/wav'}));
+}
 
 /** Builds two looping buffers: a warm low "breathing" bed and a layer of crackles and pops. */
 function buildFireBuffers(context: AudioContext) {
@@ -78,6 +94,7 @@ export function useFireSound() {
   const [supported, setSupported] = useState(true);
   const contextRef = useRef<AudioContext | null>(null);
   const soundRef = useRef<FireSound | null>(null);
+  const unlockRef = useRef<HTMLAudioElement | null>(null);
 
   const stopNow = useCallback((s: FireSound | null = soundRef.current) => {
     if (!s) return;
@@ -92,8 +109,21 @@ export function useFireSound() {
   useEffect(() => {
     const w = window as typeof window & {webkitAudioContext?: typeof AudioContext};
     setSupported(Boolean(w.AudioContext || w.webkitAudioContext));
+    // Mobile browsers suspend audio when the tab is hidden or a call comes in; resume on return.
+    const wake = () => {
+      const ctx = contextRef.current;
+      if (document.visibilityState === 'visible' && soundRef.current && ctx && ctx.state !== 'running') {
+        void ctx.resume().catch(() => {});
+        void unlockRef.current?.play().catch(() => {});
+      }
+    };
+    document.addEventListener('visibilitychange', wake);
+    window.addEventListener('pageshow', wake);
     return () => {
+      document.removeEventListener('visibilitychange', wake);
+      window.removeEventListener('pageshow', wake);
       stopNow();
+      unlockRef.current?.pause();
       void contextRef.current?.close();
     };
   }, [stopNow]);
@@ -107,6 +137,7 @@ export function useFireSound() {
         soundRef.current = null;
         setTimeout(() => stopNow(s), 600);
       }
+      unlockRef.current?.pause();
       setPlaying(false);
       return;
     }
@@ -114,9 +145,31 @@ export function useFireSound() {
       const w = window as typeof window & {webkitAudioContext?: typeof AudioContext};
       const Ctor = w.AudioContext || w.webkitAudioContext;
       if (!Ctor) { setSupported(false); return; }
+
+      // Everything up to resume() must happen synchronously inside the tap, or mobile Safari
+      // keeps the audio locked.
+      const nav = navigator as AudioSessionNavigator;
+      if (nav.audioSession) {
+        try { nav.audioSession.type = 'playback'; } catch {}
+      }
+      if (!unlockRef.current) {
+        const el = new Audio(silentWavUrl());
+        el.loop = true;
+        el.setAttribute('playsinline', '');
+        unlockRef.current = el;
+      }
+      const unlocked = unlockRef.current.play().catch(() => {});
       const context = contextRef.current ?? new Ctor();
       contextRef.current = context;
-      await context.resume();
+      const resumed = context.resume();
+
+      // Prime the output with a one-sample silent buffer (unlocks older iOS WebKit).
+      const prime = context.createBufferSource();
+      prime.buffer = context.createBuffer(1, 1, context.sampleRate);
+      prime.connect(context.destination);
+      prime.start(0);
+
+      await Promise.all([resumed, unlocked]);
       stopNow();
       const {bed, cr} = buildFireBuffers(context);
 
@@ -152,6 +205,7 @@ export function useFireSound() {
       soundRef.current = {sources: [bedSrc, crSrc], gain};
       setPlaying(true);
     } catch {
+      unlockRef.current?.pause();
       setPlaying(false);
     }
   }, [playing, stopNow]);
