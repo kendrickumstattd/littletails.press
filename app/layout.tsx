@@ -4,7 +4,7 @@ import './globals.css';
 
 const lora = Lora({subsets: ['latin'], style: ['normal', 'italic'], display: 'swap', variable: '--font-lora'});
 
-const siteUrl = process.env.URL || 'https://cheerful-biscochitos-084463.netlify.app';
+const siteUrl = process.env.URL || 'https://littletails.press';
 const description = 'Cozy watercolor storybook adventures starring Drizzy, a little French bulldog with a big heart.';
 
 export const metadata: Metadata = {
