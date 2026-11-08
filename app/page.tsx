@@ -113,7 +113,7 @@ export default function Home() {
               </div>
             </>
           )}
-          <div className="modal-footer" aria-hidden="true">❧ &nbsp; Where the littlest adventures come to life. &nbsp; ❧</div>
+          <div className="modal-footer" aria-hidden="true">Where the littlest adventures come to life.</div>
         </div>
       </dialog>
     </main>
