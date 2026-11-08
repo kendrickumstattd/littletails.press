@@ -54,7 +54,7 @@ export default function Home() {
           <div className="firelight" aria-hidden="true" />
           <div className="firelight firelight-secondary" aria-hidden="true" />
           <button type="button" className="storybook-plaque plaque-adventures" onClick={() => open('adventures')}>
-            <span aria-hidden="true">❧</span> Our Adventures <ArrowRight size={16} aria-hidden="true" /><span aria-hidden="true">❧</span>
+            Our Adventures <ArrowRight size={16} aria-hidden="true" />
           </button>
         </div>
         {fire.supported && (
@@ -64,7 +64,7 @@ export default function Home() {
           </button>
         )}
         <footer className="library-bottom-hint">
-          <p>— Where the littlest adventures come to life.</p>
+          <p>Where the littlest adventures come to life.</p>
           <button type="button" onClick={() => open('privacy')}>Privacy policy</button>
         </footer>
       </section>
@@ -81,13 +81,13 @@ export default function Home() {
           <div className="modal-ornament" aria-hidden="true">✦ LITTLE TAILS ✦</div>
           {panel === 'adventures' && (
             <>
-              <h2 id="library-modal-title" className="modal-title modal-title-compact" tabIndex={-1}>Shhh… a little adventure is in the&nbsp;making!</h2>
+              <h2 id="library-modal-title" className="modal-title modal-title-compact modal-title-oneline" tabIndex={-1}>Shhh…a little adventure is in the making!</h2>
               <div className="adventure-note">
                 <div className="adventure-paws" aria-hidden="true">🐾</div>
                 <p>Drizzy is packing his favorite blanket, dreaming of pup cups, and getting ready for his next big adventure.</p>
                 <p>Our storybooks aren’t quite ready to curl up with just yet, but something wonderful is on its way.</p>
                 <p className="adventure-callout"><strong>Check back soon.</strong> The best little tales are worth waiting&nbsp;for.</p>
-                <p className="adventure-signoff"><strong>With love,</strong><br /><strong>Little Tails Press</strong> <span aria-hidden="true">🐾</span></p>
+                <p className="signoff"><strong>With love,</strong><br /><strong>Little Tails Press <span aria-hidden="true">🐾</span></strong></p>
               </div>
             </>
           )}
@@ -109,7 +109,7 @@ export default function Home() {
                 <p>If you follow a book link, you’ll find yourself visiting Amazon, where their own privacy practices apply.</p>
                 <h3>And That’s the Whole Tail!</h3>
                 <p>No surprises, no complicated tricks. Just a cozy corner of the internet for little adventures and wonderful stories.</p>
-                <p className="privacy-signoff"><strong>With love,</strong><br /><strong>Little Tails Press <span aria-hidden="true">🐾</span></strong></p>
+                <p className="signoff"><strong>With love,</strong><br /><strong>Little Tails Press <span aria-hidden="true">🐾</span></strong></p>
               </div>
             </>
           )}
