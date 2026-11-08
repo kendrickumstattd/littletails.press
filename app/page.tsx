@@ -81,11 +81,14 @@ export default function Home() {
           <div className="modal-ornament" aria-hidden="true">✦ LITTLE TAILS ✦</div>
           {panel === 'adventures' && (
             <>
-              <h2 id="library-modal-title" className="modal-title modal-title-compact" tabIndex={-1}>Shhh…a little adventure is in the making! <span aria-hidden="true">🐾</span></h2>
-              <p>Drizzy is packing his favorite blanket, dreaming of pup cups, and getting ready for his next big adventure.</p>
-              <p>Our storybooks aren’t quite ready to curl up with just yet, but something wonderful is on its way.</p>
-              <p><strong>Check back soon. The best little tales are worth waiting for.</strong></p>
-              <p><em>With love, Little Tails Press</em> <span aria-hidden="true">🐾</span></p>
+              <h2 id="library-modal-title" className="modal-title modal-title-compact" tabIndex={-1}>Shhh… a little adventure is in the&nbsp;making!</h2>
+              <div className="adventure-note">
+                <div className="adventure-paws" aria-hidden="true">🐾</div>
+                <p>Drizzy is packing his favorite blanket, dreaming of pup cups, and getting ready for his next big adventure.</p>
+                <p>Our storybooks aren’t quite ready to curl up with just yet, but something wonderful is on its way.</p>
+                <p className="adventure-callout"><strong>Check back soon.</strong> The best little tales are worth waiting&nbsp;for.</p>
+                <p className="adventure-signoff">With love,<br /><span>Little Tails Press</span> <span aria-hidden="true">🐾</span></p>
+              </div>
             </>
           )}
           {panel === 'privacy' && (
