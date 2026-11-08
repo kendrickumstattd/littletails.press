@@ -87,7 +87,7 @@ export default function Home() {
                 <p>Drizzy is packing his favorite blanket, dreaming of pup cups, and getting ready for his next big adventure.</p>
                 <p>Our storybooks aren’t quite ready to curl up with just yet, but something wonderful is on its way.</p>
                 <p className="adventure-callout"><strong>Check back soon.</strong> The best little tales are worth waiting&nbsp;for.</p>
-                <p className="adventure-signoff"><strong></strong>With love,</p>strong><br /><span><strong></strong>Little Tails Press</strong></span> <span aria-hidden="true">🐾</span></p>
+                <p className="adventure-signoff"><strong>With love,</strong><br /><strong>Little Tails Press</strong> <span aria-hidden="true">🐾</span></p>
               </div>
             </>
           )}
