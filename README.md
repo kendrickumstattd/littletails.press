@@ -52,7 +52,8 @@ public/images/
   library-desktop.webp  1535 × 1024 homepage art (desktop, above 1024px)
   library-tablet.webp   1086 × 1448 homepage art (641–1024px)
   library-mobile.webp   941 × 1672 homepage art (640px and below)
-  og-image.jpg          Social sharing image
+  og-image.jpg          Wide library illustration (README preview)
+  share-icon.png        Social sharing image (favicon on the site background)
 netlify.toml        Build settings, security headers, image caching, and
                     redirects (old /studio links go to the homepage)
 ```
