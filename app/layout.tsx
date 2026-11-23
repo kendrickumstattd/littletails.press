@@ -7,7 +7,7 @@ const lora = Lora({subsets: ['latin'], style: ['normal', 'italic'], display: 'sw
 const siteUrl = process.env.URL || 'https://littletails.press';
 const description = 'Cozy watercolor storybook adventures starring Drizzy, a little French bulldog with a big heart.';
 
-const shareImage = {url: '/images/share-icon.png', width: 512, height: 512, alt: 'Little Tails logo: Drizzy the French bulldog in a scalloped golden frame'};
+const shareImage = {url: '/images/share-card.png', width: 1200, height: 630, alt: 'Little Tails Press: Drizzy the French bulldog in a scalloped golden frame'};
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
@@ -20,7 +20,7 @@ export const metadata: Metadata = {
     description,
     images: [shareImage],
   },
-  twitter: {card: 'summary', images: [shareImage]},
+  twitter: {card: 'summary_large_image', images: [shareImage]},
 };
 
 export const viewport: Viewport = {themeColor: '#241c15'};
